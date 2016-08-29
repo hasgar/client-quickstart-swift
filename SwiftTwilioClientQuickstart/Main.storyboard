@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="mUi-G0-Xb9">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--Dial View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="DialViewController" customModule="SwiftTwilioClientQuickstart" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status Label..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Csh-Kg-eFF">
+                                <rect key="frame" x="20" y="88" width="560" height="29"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="AEy-8S-oNB">
+                                <rect key="frame" x="20" y="135" width="560" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="xtG-uj-DvM"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                <connections>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="67y-cq-vqw"/>
+                                </connections>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JD7-pF-Gsb">
+                                <rect key="frame" x="330" y="183" width="250" height="44"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="hAS-m8-eTj"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="Hang Up">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="hangUp:" destination="BYZ-38-t0r" eventType="touchUpInside" id="D6J-Sz-FiY"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sC0-OE-aXf">
+                                <rect key="frame" x="20" y="183" width="250" height="44"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="CK9-fX-N35"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="Dial">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="dial:" destination="BYZ-38-t0r" eventType="touchUpInside" id="5N0-NW-qFc"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.94509803921568625" green="0.14509803921568626" blue="0.27058823529411763" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="AEy-8S-oNB" firstAttribute="top" secondItem="Csh-Kg-eFF" secondAttribute="bottom" constant="18" id="1nz-U8-g5m"/>
+                            <constraint firstItem="sC0-OE-aXf" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="AcP-Gi-6Cx"/>
+                            <constraint firstItem="JD7-pF-Gsb" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="Kp2-zv-13P"/>
+                            <constraint firstItem="sC0-OE-aXf" firstAttribute="top" secondItem="AEy-8S-oNB" secondAttribute="bottom" constant="18" id="SKP-y1-Jhh"/>
+                            <constraint firstItem="JD7-pF-Gsb" firstAttribute="leading" secondItem="sC0-OE-aXf" secondAttribute="trailing" constant="60" id="VWc-15-7uj"/>
+                            <constraint firstItem="AEy-8S-oNB" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="X2Y-C1-p8Q"/>
+                            <constraint firstItem="Csh-Kg-eFF" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="b7H-Qg-nOH"/>
+                            <constraint firstItem="Csh-Kg-eFF" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="hdg-sY-aiS"/>
+                            <constraint firstItem="Csh-Kg-eFF" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="24" id="jb2-jg-S9h"/>
+                            <constraint firstItem="JD7-pF-Gsb" firstAttribute="top" secondItem="AEy-8S-oNB" secondAttribute="bottom" constant="18" id="m49-DJ-cWy"/>
+                            <constraint firstItem="JD7-pF-Gsb" firstAttribute="width" secondItem="sC0-OE-aXf" secondAttribute="width" id="q80-FY-sTc"/>
+                            <constraint firstItem="AEy-8S-oNB" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="yFV-42-GxI"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="BOX-Yb-4al"/>
+                    <connections>
+                        <outlet property="dialButton" destination="sC0-OE-aXf" id="NcF-lT-WbL"/>
+                        <outlet property="dialTextField" destination="AEy-8S-oNB" id="OGZ-q6-XPV"/>
+                        <outlet property="hangUpButton" destination="JD7-pF-Gsb" id="IbL-hT-2Ag"/>
+                        <outlet property="statusLabel" destination="Csh-Kg-eFF" id="Ux0-Hx-tTz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1117" y="367"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="qKq-0N-59A">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="mUi-G0-Xb9" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="35o-0X-iMf">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="TSS-Wy-89a"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cUO-aV-9fU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="305" y="367"/>
+        </scene>
+    </scenes>
+</document>
