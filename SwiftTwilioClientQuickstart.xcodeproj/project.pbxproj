@@ -98,6 +98,7 @@
 				TargetAttributes = {
 					281F97F31D747F31002FD858 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0820;
 					};
 				};
 			};
@@ -250,6 +251,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.twilio.client.SwiftTwilioClientQuickstart;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "SwiftTwilioClientQuickstart-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -262,6 +264,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.twilio.client.SwiftTwilioClientQuickstart;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "SwiftTwilioClientQuickstart-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
