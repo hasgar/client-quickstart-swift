@@ -40,31 +40,30 @@ class DialViewController: UIViewController,
     
     //MARK: Initialization methods
     
-    func initializeTwilioDevice(token:String) {
+    func initializeTwilioDevice(_ token:String) {
         device = TCDevice.init(capabilityToken: token, delegate: self)
-        self.dialButton.enabled = true
+        self.dialButton.isEnabled = true
     }
     
     func retrieveToken() {
         // Create a GET request to the capability token endpoint
-        let session = NSURLSession.sharedSession()
+        let session = URLSession.shared
         
-        let url = NSURL(string: TOKEN_URL)
-        let request = NSURLRequest(URL: url!, cachePolicy: .UseProtocolCachePolicy, timeoutInterval: 30.0)
+        let url = URL(string: TOKEN_URL)
+        let request = URLRequest(url: url!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 30.0)
         
-        
-        let task = session.dataTaskWithRequest(request) { (responseData:NSData?, response:NSURLResponse?, error:NSError?) in
+        let task = session.dataTask(with: request) { (responseData, response, error) in
             if let responseData = responseData {
                 do {
-                    let responseObject = try NSJSONSerialization.JSONObjectWithData(responseData, options: [])
+                    let responseObject = try JSONSerialization.jsonObject(with: responseData, options: []) as! [String:String]
                     
-                    if let identity = responseObject["identity"] as? String{
-                        dispatch_async(dispatch_get_main_queue()) {
+                    if let identity = responseObject["identity"] {
+                        DispatchQueue.main.async {
                             self.navigationItem.title = identity
                         }
                     }
                     
-                    if let token = responseObject["token"] as? String {
+                    if let token = responseObject["token"] {
                         self.initializeTwilioDevice(token)
                     }
                 } catch let error {
@@ -74,91 +73,97 @@ class DialViewController: UIViewController,
                 self.displayError(error.localizedDescription)
             }
         }
+ 
         task.resume()
     }
     
     //MARK: Utility Methods
     
-    func displayError(errorMessage:String) {
-        let alertController = UIAlertController(title: "Error", message: errorMessage, preferredStyle: .Alert)
-        let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+    func displayError(_ errorMessage:String) {
+        let alertController = UIAlertController(title: "Error", message: errorMessage, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alertController.addAction(okAction)
-        presentViewController(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
     
     
     //MARK: TCDeviceDelegate
+    func deviceDidStartListening(forIncomingConnections device: TCDevice) {
+        statusLabel.text = "Started listening for incoming connections"
+
+    }
     
-    func device(device:TCDevice, didStopListeningForIncomingConnections:NSError?) {
-        if let error = didStopListeningForIncomingConnections {
+    func device(_ device: TCDevice, didStopListeningForIncomingConnections error: Error?) {
+        if let error = error {
             print(error.localizedDescription)
         }
     }
-
-    func deviceDidStartListeningForIncomingConnections(device: TCDevice) {
-        statusLabel.text = "Started listening for incoming connections"
-    }
     
-    func device(device: TCDevice, didReceiveIncomingConnection connection: TCConnection) {
+    func device(_ device: TCDevice, didReceiveIncomingConnection connection: TCConnection) {
         if let parameters = connection.parameters {
             let from = parameters["From"]
             let message = "Incoming call from \(from)"
-            let alertController = UIAlertController(title: "Incoming Call", message: message, preferredStyle: .Alert)
-            let acceptAction = UIAlertAction(title: "Accept", style: .Default, handler: { (action:UIAlertAction) in
+            let alertController = UIAlertController(title: "Incoming Call", message: message, preferredStyle: .alert)
+            let acceptAction = UIAlertAction(title: "Accept", style: .default, handler: { (action:UIAlertAction) in
                 connection.delegate = self
                 connection.accept()
                 self.connection = connection
             })
-            let declineAction = UIAlertAction(title: "Decline", style: .Cancel, handler: { (action:UIAlertAction) in
+            let declineAction = UIAlertAction(title: "Decline", style: .cancel, handler: { (action:UIAlertAction) in
                 connection.reject()
             })
             alertController.addAction(acceptAction)
             alertController.addAction(declineAction)
-            presentViewController(alertController, animated: true, completion: nil)
+            present(alertController, animated: true, completion: nil)
         }
     }
     
+    func device(_ device: TCDevice, didReceivePresenceUpdate presenceEvent: TCPresenceEvent) {
+        
+    }
+    
+    
     
     //MARK: TCConnectionDelegate
-    func connection(connection: TCConnection, didFailWithError:NSError?) {
-        if let error = didFailWithError {
+    func connectionDidConnect(_ connection: TCConnection) {
+        statusLabel.text = "Connected"
+        hangUpButton.isEnabled = true
+    }
+    
+    func connectionDidDisconnect(_ connection: TCConnection) {
+        statusLabel.text = "Disconnected"
+        dialButton.isEnabled = true
+        hangUpButton.isEnabled = false
+    }
+    
+    func connectionDidStartConnecting(_ connection: TCConnection) {
+        statusLabel.text = "Started connecting...."
+    }
+    
+    func connection(_ connection: TCConnection, didFailWithError error: Error?) {
+        if let error = error {
             print(error.localizedDescription)
         }
     }
     
-    func connectionDidStartConnecting(connection: TCConnection) {
-        statusLabel.text = "Started connecting...."
-    }
-    
-    func connectionDidConnect(connection: TCConnection) {
-        statusLabel.text = "Connected"
-        hangUpButton.enabled = true
-    }
-    
-    func connectionDidDisconnect(connection: TCConnection) {
-        statusLabel.text = "Disconnected"
-        dialButton.enabled = true
-        hangUpButton.enabled = false
-    }
-    
     //MARK: UITextFieldDelegate
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         dial(dialTextField)
         dialTextField.resignFirstResponder()
         return true;
     }
     
     //MARK: IB Actions
-    @IBAction func hangUp(sender: AnyObject) {
+    @IBAction func hangUp(_ sender: AnyObject) {
         if let connection = connection {
             connection.disconnect()
         }
     }
     
-    @IBAction func dial(sender: AnyObject) {
+    @IBAction func dial(_ sender: AnyObject) {
         if let device = device {
-            device.connect(["To":dialTextField.text!], delegate: self)
-            dialButton.enabled = false
+            connection = device.connect(["To":dialTextField.text!], delegate: self)
+            dialButton.isEnabled = false
             dialTextField.resignFirstResponder()
         }
     }
